@@ -3,22 +3,22 @@ import { ShieldAlert, ShieldCheck, AlertTriangle } from "lucide-react";
 export default function RiskCard({ riskLevel, isFake, recommendation }) {
   const config = {
     low: {
-      border: "border-emerald-500/25",
-      bg: "bg-emerald-500/5",
+      border: "border-success-border",
+      bg: "bg-success-light",
       text: "text-success",
       icon: ShieldCheck,
       label: "Low Risk",
     },
     medium: {
-      border: "border-amber-500/25",
-      bg: "bg-amber-500/5",
+      border: "border-warning-border",
+      bg: "bg-warning-light",
       text: "text-warning",
       icon: AlertTriangle,
       label: "Medium Risk",
     },
     high: {
-      border: "border-red-500/25",
-      bg: "bg-red-500/5",
+      border: "border-danger-border",
+      bg: "bg-danger-light",
       text: "text-danger",
       icon: ShieldAlert,
       label: "High Risk",
@@ -32,27 +32,21 @@ export default function RiskCard({ riskLevel, isFake, recommendation }) {
     <div className={`rounded-card border ${c.border} ${c.bg} p-6 flex flex-col gap-4 h-full`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className={`h-10 w-10 rounded-xl border ${c.border} flex items-center justify-center`}>
+          <div className={`h-10 w-10 rounded-card-sm border ${c.border} bg-white/60 flex items-center justify-center`}>
             <Icon className={`h-5 w-5 ${c.text}`} strokeWidth={2} />
           </div>
-          <span className={`font-bold text-lg ${c.text}`}>{c.label}</span>
+          <span className={`font-bold text-heading-md font-display ${c.text}`}>{c.label}</span>
         </div>
-        <span
-          className={`text-[11px] font-semibold px-2.5 py-1 rounded-md border uppercase tracking-wide ${
-            isFake
-              ? "text-danger bg-red-500/10 border-red-500/25"
-              : "text-success bg-emerald-500/10 border-emerald-500/25"
-          }`}
-        >
+        <span className={isFake ? "badge-danger" : "badge-success"}>
           {isFake ? "Fake" : "Legitimate"}
         </span>
       </div>
 
-      <div className="border-t border-surface-border pt-4">
-        <p className="text-slate-500 text-[11px] uppercase tracking-wider font-medium mb-2">
+      <div className="border-t border-current/10 pt-4">
+        <p className="text-overline uppercase tracking-widest font-semibold text-body mb-2">
           Recommendation
         </p>
-        <p className="text-slate-200 text-[15px] leading-relaxed">{recommendation}</p>
+        <p className="text-body-md text-heading leading-relaxed">{recommendation}</p>
       </div>
     </div>
   );

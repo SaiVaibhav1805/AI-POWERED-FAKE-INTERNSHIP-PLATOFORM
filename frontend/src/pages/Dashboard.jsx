@@ -7,17 +7,17 @@ import {
   Gauge,
   Plus,
   ChevronRight,
+  FileText,
 } from "lucide-react";
 import { getMe, getReports } from "../api/api";
 import LoadingScreen from "../components/LoadingScreen";
 import PageHeader from "../components/PageHeader";
 import StatCard from "../components/StatCard";
-import EmptyAnalysisIllustration from "../components/illustrations/EmptyAnalysisIllustration";
 
-const riskStyles = {
-  low: "text-success bg-emerald-500/10 border-emerald-500/25",
-  medium: "text-warning bg-amber-500/10 border-amber-500/25",
-  high: "text-danger bg-red-500/10 border-red-500/25",
+const riskBadge = {
+  low: "badge-success",
+  medium: "badge-warning",
+  high: "badge-danger",
 };
 
 function scoreColor(score) {
@@ -59,15 +59,13 @@ export default function Dashboard() {
     ? Math.round(reports.reduce((sum, r) => sum + r.trust_score, 0) / total)
     : 0;
 
-  const firstName = user?.name?.split(" ")[0] || "there";
-
   return (
     <div className="page-container animate-fade-in">
       <PageHeader
         title={
           <>
             Welcome back,{" "}
-            <span className="text-accent">{user?.name || firstName}</span>
+            <span className="text-primary">{user?.name || "there"}</span>
           </>
         }
         subtitle={user?.email}
@@ -79,23 +77,25 @@ export default function Dashboard() {
         }
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 lg:mb-10">
-        <StatCard label="Total Analyzed" value={total} icon={BarChart3} accent="accent" />
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 mb-8 lg:mb-10">
+        <StatCard label="Total Analyzed" value={total} icon={BarChart3} accent="primary" />
         <StatCard label="Fake Detected" value={fakeCount} icon={AlertTriangle} accent="danger" />
         <StatCard label="Safe Postings" value={safeCount} icon={ShieldCheck} accent="success" />
         <StatCard label="Avg Trust Score" value={avgScore} icon={Gauge} accent="warning" />
       </div>
 
+      {/* Recent analyses */}
       <div className="card p-6 lg:p-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-semibold text-white">Recent Analyses</h2>
-            <p className="text-slate-500 text-[13px] mt-1">Your latest saved posting reviews</p>
+            <h2 className="text-heading-md text-heading font-display">Recent Analyses</h2>
+            <p className="text-body-sm text-body mt-1">Your latest saved posting reviews</p>
           </div>
           {reports.length > 0 && (
             <Link
               to="/reports"
-              className="inline-flex items-center gap-1 text-accent text-sm font-medium hover:text-accent-hover transition-colors"
+              className="inline-flex items-center gap-1 text-primary text-body-sm font-medium hover:text-primary-hover transition-colors"
             >
               View all
               <ChevronRight className="h-4 w-4" />
@@ -105,10 +105,12 @@ export default function Dashboard() {
 
         {reports.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 lg:py-20 gap-5">
-            <EmptyAnalysisIllustration className="w-48 h-auto opacity-90" />
+            <div className="h-16 w-16 rounded-2xl bg-surface-tertiary border border-surface-border flex items-center justify-center">
+              <FileText className="h-8 w-8 text-muted" />
+            </div>
             <div className="text-center max-w-sm">
-              <p className="text-white font-medium text-[15px]">No analyses yet</p>
-              <p className="text-slate-500 text-[14px] mt-2 leading-relaxed">
+              <p className="text-heading font-semibold text-body-lg">No analyses yet</p>
+              <p className="text-body text-body-sm mt-2 leading-relaxed">
                 Paste an internship posting or upload a file to get your first AI-powered verdict.
               </p>
             </div>
@@ -122,11 +124,11 @@ export default function Dashboard() {
             {reports.slice(0, 5).map((r) => (
               <div
                 key={r.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-surface-border bg-navy-50/50 px-5 py-4 transition-colors hover:border-slate-600/50"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-card-sm border border-surface-border bg-surface-secondary px-5 py-4 transition-all duration-200 hover:border-surface-border-hover hover:shadow-card-sm"
               >
                 <div>
-                  <p className="text-white text-[15px] font-medium">{r.posting_title}</p>
-                  <p className="text-slate-500 text-[13px] mt-0.5">
+                  <p className="text-heading text-body-md font-medium">{r.posting_title}</p>
+                  <p className="text-muted text-caption mt-0.5">
                     {new Date(r.created_at).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",
@@ -137,25 +139,15 @@ export default function Dashboard() {
 
                 <div className="flex items-center gap-3 flex-wrap">
                   <div className="text-right">
-                    <p className="text-[11px] uppercase tracking-wider text-slate-600">Trust</p>
-                    <p className={`font-semibold text-sm tabular-nums ${scoreColor(r.trust_score)}`}>
+                    <p className="text-overline uppercase tracking-wider text-muted">Trust</p>
+                    <p className={`font-semibold text-body-sm tabular-nums ${scoreColor(r.trust_score)}`}>
                       {r.trust_score}/100
                     </p>
                   </div>
-                  <span
-                    className={`text-[11px] font-semibold px-2.5 py-1 rounded-md border uppercase tracking-wide ${
-                      riskStyles[r.risk_level] || riskStyles.medium
-                    }`}
-                  >
+                  <span className={riskBadge[r.risk_level] || riskBadge.medium}>
                     {r.risk_level}
                   </span>
-                  <span
-                    className={`text-[11px] font-semibold px-2.5 py-1 rounded-md border uppercase tracking-wide ${
-                      r.is_fake
-                        ? "text-danger bg-red-500/10 border-red-500/25"
-                        : "text-success bg-emerald-500/10 border-emerald-500/25"
-                    }`}
-                  >
+                  <span className={r.is_fake ? "badge-danger" : "badge-success"}>
                     {r.is_fake ? "Fake" : "Safe"}
                   </span>
                 </div>

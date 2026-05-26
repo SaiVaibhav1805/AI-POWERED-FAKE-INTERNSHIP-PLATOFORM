@@ -1,5 +1,6 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Analyze from "./pages/Analyze";
 import Reports from "./pages/Reports";
@@ -13,9 +14,12 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default function App() {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
     <AuthModalProvider>
-      <div className="min-h-screen bg-navy text-slate-300 flex flex-col">
+      <div className="min-h-screen bg-white text-body flex flex-col">
         <Navbar />
         <main className="flex-1">
           <Routes>
@@ -46,6 +50,7 @@ export default function App() {
             />
           </Routes>
         </main>
+        <Footer />
       </div>
     </AuthModalProvider>
   );

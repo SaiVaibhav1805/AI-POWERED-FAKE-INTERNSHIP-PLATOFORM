@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileUp, Loader2 } from "lucide-react";
+import { FileUp, Loader2, CheckCircle2 } from "lucide-react";
 import { uploadFile } from "../api/api";
 
 export default function UploadForm({ onExtracted }) {
@@ -35,10 +35,10 @@ export default function UploadForm({ onExtracted }) {
       }}
       onDragLeave={() => setDragging(false)}
       onDrop={handleDrop}
-      className={`card border-dashed p-10 lg:p-12 text-center transition-all duration-200 cursor-pointer ${
+      className={`card border-dashed border-2 p-10 lg:p-14 text-center transition-all duration-200 cursor-pointer ${
         dragging
-          ? "border-accent bg-accent/5"
-          : "hover:border-slate-500"
+          ? "border-primary bg-primary-light shadow-card"
+          : "border-surface-border-hover hover:border-primary/40 hover:bg-surface-secondary"
       }`}
     >
       <input
@@ -50,25 +50,31 @@ export default function UploadForm({ onExtracted }) {
       />
       <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center gap-4">
         <div
-          className={`h-14 w-14 rounded-2xl border flex items-center justify-center transition-colors ${
-            dragging ? "border-accent/40 bg-accent/10" : "border-surface-border bg-navy-50"
+          className={`h-16 w-16 rounded-2xl border-2 flex items-center justify-center transition-all duration-200 ${
+            dragging
+              ? "border-primary/40 bg-primary-100"
+              : "border-surface-border bg-surface-tertiary"
           }`}
         >
           {loading ? (
-            <Loader2 className="h-6 w-6 text-accent animate-spin" />
+            <Loader2 className="h-7 w-7 text-primary animate-spin" />
           ) : (
-            <FileUp className="h-6 w-6 text-slate-400" strokeWidth={2} />
+            <FileUp className="h-7 w-7 text-muted" strokeWidth={1.8} />
           )}
         </div>
         <div>
-          <p className="text-slate-200 font-medium text-[15px]">
+          <p className="text-heading font-semibold text-body-lg">
             {loading ? "Extracting text from file..." : "Drop your file here or click to upload"}
           </p>
-          <p className="text-slate-500 text-[14px] mt-2">Supports PDF, DOCX, and TXT</p>
+          <p className="text-body text-body-sm mt-2">
+            Supports PDF, DOCX, and TXT files
+          </p>
         </div>
       </label>
       {error && (
-        <p className="text-danger text-sm mt-4">{error}</p>
+        <div className="mt-4 inline-flex items-center gap-2 text-danger text-body-sm">
+          <span>{error}</span>
+        </div>
       )}
     </div>
   );

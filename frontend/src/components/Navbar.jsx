@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Menu,
   X,
@@ -12,8 +12,10 @@ import Logo from "./Logo";
 import { useAuthModal } from "../context/AuthModalContext";
 
 const navLinkClass = (active) =>
-  `text-sm font-medium transition-colors duration-150 ${
-    active ? "text-white" : "text-slate-400 hover:text-slate-200"
+  `text-body-sm font-medium transition-all duration-200 relative ${
+    active
+      ? "text-primary"
+      : "text-body hover:text-heading"
   }`;
 
 export default function Navbar() {
@@ -21,7 +23,19 @@ export default function Navbar() {
   const location = useLocation();
   const token = localStorage.getItem("token");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { openAuth } = useAuthModal();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -38,10 +52,17 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-surface-border/80 bg-navy/95 backdrop-blur-sm">
-      <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <header
+      className={`sticky top-0 z-40 transition-all duration-300 ${
+        scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-card-sm border-b border-surface-border"
+          : "bg-white border-b border-transparent"
+      }`}
+    >
+      <nav className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Logo />
 
+        {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-8">
           {!token ? (
             <>
@@ -56,11 +77,15 @@ export default function Navbar() {
             appLinks.map(({ to, label }) => (
               <Link key={to} to={to} className={navLinkClass(isActive(to))}>
                 {label}
+                {isActive(to) && (
+                  <span className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-primary rounded-full" />
+                )}
               </Link>
             ))
           )}
         </div>
 
+        {/* Desktop CTA buttons */}
         <div className="hidden md:flex items-center gap-3">
           {token ? (
             <button type="button" onClick={handleLogout} className="btn-secondary !py-2">
@@ -70,7 +95,7 @@ export default function Navbar() {
           ) : (
             <>
               <button type="button" onClick={() => openAuth("login")} className="btn-ghost">
-                Login
+                Log in
               </button>
               <button type="button" onClick={() => openAuth("register")} className="btn-primary">
                 Get Started
@@ -79,6 +104,7 @@ export default function Navbar() {
           )}
         </div>
 
+        {/* Mobile menu toggle */}
         <button
           type="button"
           className="md:hidden btn-ghost !p-2"
@@ -89,8 +115,9 @@ export default function Navbar() {
         </button>
       </nav>
 
+      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-surface-border bg-navy-50 px-6 py-4 flex flex-col gap-1 animate-fade-in">
+        <div className="md:hidden border-t border-surface-border bg-white px-5 py-4 flex flex-col gap-1 animate-fade-in-down shadow-card">
           {!token ? (
             <>
               <a href="#features" className="btn-ghost justify-start" onClick={() => setMobileOpen(false)}>
@@ -99,10 +126,11 @@ export default function Navbar() {
               <a href="#how-it-works" className="btn-ghost justify-start" onClick={() => setMobileOpen(false)}>
                 How it works
               </a>
+              <div className="border-t border-surface-border my-2" />
               <button type="button" className="btn-ghost justify-start" onClick={() => { openAuth("login"); setMobileOpen(false); }}>
-                Login
+                Log in
               </button>
-              <button type="button" className="btn-primary w-full mt-2" onClick={() => { openAuth("register"); setMobileOpen(false); }}>
+              <button type="button" className="btn-primary w-full mt-1" onClick={() => { openAuth("register"); setMobileOpen(false); }}>
                 Get Started
               </button>
             </>
@@ -112,14 +140,17 @@ export default function Navbar() {
                 <Link
                   key={to}
                   to={to}
-                  className="btn-ghost justify-start gap-3"
+                  className={`btn-ghost justify-start gap-3 ${
+                    isActive(to) ? "!text-primary !bg-primary-light" : ""
+                  }`}
                   onClick={() => setMobileOpen(false)}
                 >
                   <Icon className="h-4 w-4" />
                   {label}
                 </Link>
               ))}
-              <button type="button" className="btn-ghost justify-start text-danger mt-2" onClick={handleLogout}>
+              <div className="border-t border-surface-border my-2" />
+              <button type="button" className="btn-ghost justify-start text-danger" onClick={handleLogout}>
                 <LogOut className="h-4 w-4" />
                 Logout
               </button>

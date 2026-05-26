@@ -9,6 +9,7 @@ import {
   Save,
   RotateCcw,
   ScanSearch,
+  CheckCircle2,
 } from "lucide-react";
 import { analyzePosting, saveReport } from "../api/api";
 import UploadForm from "../components/UploadForm";
@@ -106,11 +107,12 @@ export default function Analyze() {
         subtitle="Paste internship details manually or upload a file for an instant AI-powered verdict."
       />
 
-      <div className="flex bg-navy-50 border border-surface-border rounded-xl p-1 mb-8 w-fit gap-1">
+      {/* Tab switcher */}
+      <div className="flex bg-surface-secondary border border-surface-border rounded-card-sm p-1 mb-8 w-fit gap-1">
         <button
           type="button"
           onClick={() => setActiveTab("manual")}
-          className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 ${
+          className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-body-sm font-semibold transition-all duration-200 ${
             activeTab === "manual" ? "tab-active" : "tab-inactive"
           }`}
         >
@@ -120,7 +122,7 @@ export default function Analyze() {
         <button
           type="button"
           onClick={() => setActiveTab("upload")}
-          className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 ${
+          className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-body-sm font-semibold transition-all duration-200 ${
             activeTab === "upload" ? "tab-active" : "tab-inactive"
           }`}
         >
@@ -129,12 +131,14 @@ export default function Analyze() {
         </button>
       </div>
 
+      {/* Upload form */}
       {activeTab === "upload" && (
         <div className="mb-8">
           <UploadForm onExtracted={handleExtracted} />
         </div>
       )}
 
+      {/* Manual form */}
       {activeTab === "manual" && (
         <div className="card p-6 lg:p-8 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
@@ -311,9 +315,9 @@ export default function Analyze() {
                     name={cb.name}
                     checked={form[cb.name] === 1}
                     onChange={handleChange}
-                    className="h-4 w-4 rounded border-surface-border bg-navy-50 text-accent focus:ring-accent/30 focus:ring-offset-navy"
+                    className="h-4 w-4 rounded border-surface-border bg-surface-secondary text-primary focus:ring-primary/20"
                   />
-                  <span className="text-slate-400 text-[14px] group-hover:text-slate-300 transition-colors">
+                  <span className="text-body-sm text-body group-hover:text-heading transition-colors">
                     {cb.label}
                   </span>
                 </label>
@@ -323,18 +327,20 @@ export default function Analyze() {
         </div>
       )}
 
+      {/* Error state */}
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 mb-6">
-          <p className="text-red-400 text-sm">{error}</p>
+        <div className="rounded-card-sm border border-danger-border bg-danger-light px-5 py-3.5 mb-6">
+          <p className="text-danger text-body-sm">{error}</p>
         </div>
       )}
 
+      {/* Analyze button */}
       {!result && (
         <button
           type="button"
           onClick={handleAnalyze}
           disabled={loading}
-          className="btn-primary w-full py-4 text-[16px] mb-10"
+          className="btn-primary w-full py-4 text-body-md mb-10"
         >
           {loading ? (
             <>
@@ -350,10 +356,11 @@ export default function Analyze() {
         </button>
       )}
 
+      {/* Results section */}
       {result && (
         <div className="flex flex-col gap-6 animate-slide-up">
           <div className="border-t border-surface-border pt-8">
-            <h2 className="text-xl font-bold text-white mb-6 tracking-tight">Analysis Results</h2>
+            <h2 className="text-heading-lg text-heading mb-6 font-display">Analysis Results</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="card p-6 flex items-center justify-center">
@@ -368,29 +375,38 @@ export default function Analyze() {
               </div>
             </div>
 
+            {/* Gemini analysis */}
             <div className="card p-6 mb-6">
               <div className="flex items-center gap-2.5 mb-4">
-                <Sparkles className="h-5 w-5 text-accent" strokeWidth={2} />
-                <h3 className="text-white font-semibold">Gemini AI Analysis</h3>
+                <div className="h-8 w-8 rounded-lg bg-primary-light border border-primary-200 flex items-center justify-center">
+                  <Sparkles className="h-4 w-4 text-primary" strokeWidth={2} />
+                </div>
+                <h3 className="text-heading-md text-heading">Gemini AI Analysis</h3>
               </div>
-              <p className="text-slate-300 text-[15px] leading-relaxed">{result.gemini_analysis}</p>
+              <p className="text-body-md text-body leading-relaxed">{result.gemini_analysis}</p>
             </div>
 
+            {/* Red flags */}
             <div className="card p-6 mb-6">
               <div className="flex items-center gap-2.5 mb-4">
-                <Flag className="h-5 w-5 text-warning" strokeWidth={2} />
-                <h3 className="text-white font-semibold">Red Flags</h3>
+                <div className="h-8 w-8 rounded-lg bg-warning-light border border-warning-border flex items-center justify-center">
+                  <Flag className="h-4 w-4 text-warning" strokeWidth={2} />
+                </div>
+                <h3 className="text-heading-md text-heading">Red Flags</h3>
               </div>
               <FlagList flags={result.red_flags} />
             </div>
 
+            {/* ML model score */}
             <div className="card p-6 mb-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
-                  <Cpu className="h-5 w-5 text-slate-400" strokeWidth={2} />
-                  <h3 className="text-white font-semibold">ML Model Score</h3>
+                  <div className="h-8 w-8 rounded-lg bg-surface-tertiary border border-surface-border flex items-center justify-center">
+                    <Cpu className="h-4 w-4 text-body" strokeWidth={2} />
+                  </div>
+                  <h3 className="text-heading-md text-heading">ML Model Score</h3>
                 </div>
-                <span className="text-slate-500 text-[14px]">
+                <span className="text-body-sm text-body">
                   Fraud probability:{" "}
                   <span
                     className={`font-semibold tabular-nums ${
@@ -401,7 +417,7 @@ export default function Analyze() {
                   </span>
                 </span>
               </div>
-              <div className="h-1.5 bg-navy-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-surface-tertiary rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-1000 ${
                     result.ml_score > 0.5 ? "bg-danger" : "bg-success"
@@ -411,19 +427,24 @@ export default function Analyze() {
               </div>
             </div>
 
+            {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 type="button"
                 onClick={handleSaveReport}
                 disabled={saved}
-                className="btn-primary flex-1 py-3 disabled:!bg-navy-100 disabled:!text-slate-600"
+                className={`flex-1 py-3 inline-flex items-center justify-center gap-2 rounded-button font-semibold text-body-sm transition-all duration-200 ${
+                  saved
+                    ? "bg-success-light text-success border border-success-border"
+                    : "btn-primary"
+                }`}
               >
-                <Save className="h-4 w-4" />
-                {saved ? "Report saved" : "Save report"}
+                {saved ? <CheckCircle2 className="h-4 w-4" /> : <Save className="h-4 w-4" />}
+                {saved ? "Report Saved" : "Save Report"}
               </button>
               <button type="button" onClick={handleReset} className="btn-secondary flex-1 py-3">
                 <RotateCcw className="h-4 w-4" />
-                Analyze another
+                Analyze Another
               </button>
             </div>
           </div>

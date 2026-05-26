@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { X } from "lucide-react";
+import { X, Shield } from "lucide-react";
 import { loginUser, registerUser } from "../api/api";
 
 export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
@@ -68,36 +68,50 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
       aria-modal="true"
       aria-labelledby="auth-modal-title"
     >
+      {/* Overlay */}
       <div
-        className="absolute inset-0 bg-navy/80 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-heading/40 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden
       />
 
-      <div className="relative w-full max-w-md card p-8 shadow-card-hover animate-slide-up">
+      {/* Modal card */}
+      <div className="relative w-full max-w-md bg-white rounded-2xl border border-surface-border shadow-modal p-8 animate-scale-in">
+        {/* Close button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 btn-ghost !p-2 rounded-lg"
+          className="absolute right-4 top-4 h-8 w-8 rounded-lg flex items-center justify-center text-muted hover:text-heading hover:bg-surface-tertiary transition-colors"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
         </button>
 
-        <div className="flex bg-navy-50 rounded-xl p-1 mb-8 border border-surface-border">
+        {/* Logo */}
+        <div className="flex items-center gap-2 mb-6">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-light border border-primary-200">
+            <Shield className="h-4 w-4 text-primary" strokeWidth={2} />
+          </div>
+          <span className="text-body-md font-bold text-heading font-display">
+            Internship<span className="text-primary">Guard</span>
+          </span>
+        </div>
+
+        {/* Tab switcher */}
+        <div className="flex bg-surface-secondary rounded-card-sm p-1 mb-8 border border-surface-border">
           <button
             type="button"
             onClick={() => { setIsLogin(true); setError(""); }}
-            className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 ${
+            className={`flex-1 py-2.5 rounded-lg text-body-sm font-semibold transition-all duration-200 ${
               isLogin ? "tab-active" : "tab-inactive"
             }`}
           >
-            Login
+            Log in
           </button>
           <button
             type="button"
             onClick={() => { setIsLogin(false); setError(""); }}
-            className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 ${
+            className={`flex-1 py-2.5 rounded-lg text-body-sm font-semibold transition-all duration-200 ${
               !isLogin ? "tab-active" : "tab-inactive"
             }`}
           >
@@ -105,15 +119,17 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
           </button>
         </div>
 
-        <h2 id="auth-modal-title" className="text-2xl font-bold text-white tracking-tight">
+        {/* Heading */}
+        <h2 id="auth-modal-title" className="font-display text-heading-lg text-heading">
           {isLogin ? "Welcome back" : "Create your account"}
         </h2>
-        <p className="text-slate-500 text-[15px] mt-2 mb-6">
+        <p className="text-body text-body-sm mt-2 mb-6">
           {isLogin
             ? "Sign in to access your analysis dashboard and saved reports."
             : "Start protecting yourself from fraudulent internship postings."}
         </p>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {!isLogin && (
             <div>
@@ -126,7 +142,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="Shubham Singh Negi"
+                placeholder="Your full name"
                 className="input-field"
                 required={!isLogin}
               />
@@ -166,8 +182,8 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
           </div>
 
           {error && (
-            <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3">
-              <p className="text-red-400 text-sm">{error}</p>
+            <div className="rounded-card-sm border border-danger-border bg-danger-light px-4 py-3">
+              <p className="text-danger text-body-sm">{error}</p>
             </div>
           )}
 
@@ -182,7 +198,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
           </button>
         </form>
 
-        <p className="text-slate-600 text-xs text-center mt-6 leading-relaxed">
+        <p className="text-muted text-overline text-center mt-6 leading-relaxed">
           By continuing, you agree to our Terms of Service and Privacy Policy.
         </p>
       </div>

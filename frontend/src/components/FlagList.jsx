@@ -3,9 +3,9 @@ import { CheckCircle2, AlertCircle, Info } from "lucide-react";
 export default function FlagList({ flags }) {
   if (!flags || flags.length === 0) {
     return (
-      <div className="flex items-center gap-3 rounded-xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-3">
+      <div className="flex items-center gap-3 rounded-card-sm border border-success-border bg-success-light px-4 py-3">
         <CheckCircle2 className="h-5 w-5 text-success flex-shrink-0" />
-        <p className="text-success text-[14px]">No red flags detected in this posting.</p>
+        <p className="text-success text-body-sm">No red flags detected in this posting.</p>
       </div>
     );
   }
@@ -13,19 +13,19 @@ export default function FlagList({ flags }) {
   const severityConfig = {
     high: {
       color: "text-danger",
-      bg: "bg-red-500/5",
-      border: "border-red-500/20",
+      bg: "bg-danger-light",
+      border: "border-danger-border",
       icon: AlertCircle,
     },
     medium: {
       color: "text-warning",
-      bg: "bg-amber-500/5",
-      border: "border-amber-500/20",
+      bg: "bg-warning-light",
+      border: "border-warning-border",
       icon: AlertCircle,
     },
     low: {
-      color: "text-slate-400",
-      bg: "bg-navy-50",
+      color: "text-body",
+      bg: "bg-surface-secondary",
       border: "border-surface-border",
       icon: Info,
     },
@@ -38,7 +38,7 @@ export default function FlagList({ flags }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-slate-500 text-[13px] mb-1">
+      <p className="text-body text-caption mb-1">
         {flags.length} red flag{flags.length > 1 ? "s" : ""} detected
       </p>
       {sorted.map((flag, i) => {
@@ -47,11 +47,11 @@ export default function FlagList({ flags }) {
         return (
           <div
             key={i}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${c.border} ${c.bg}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-card-sm border ${c.border} ${c.bg}`}
           >
             <Icon className={`h-4 w-4 flex-shrink-0 ${c.color}`} strokeWidth={2} />
-            <span className={`text-[14px] flex-1 ${c.color} capitalize`}>{flag.flag}</span>
-            <span className={`text-[11px] uppercase font-semibold tracking-wide ${c.color}`}>
+            <span className={`text-body-sm flex-1 ${c.color} capitalize`}>{flag.flag}</span>
+            <span className={`text-overline uppercase font-semibold tracking-wide ${c.color}`}>
               {flag.severity}
             </span>
           </div>
