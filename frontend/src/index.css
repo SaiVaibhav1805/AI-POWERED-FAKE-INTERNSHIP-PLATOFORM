@@ -8,15 +8,18 @@
   }
 
   body {
-    @apply font-sans text-body-md text-body bg-white;
+    @apply font-sans text-body-md text-body bg-white
+      dark:text-slate-300 dark:bg-dark;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   ::selection {
-    @apply bg-primary-200 text-primary-900;
+    @apply bg-primary-200 text-primary-900
+      dark:bg-primary-400/30 dark:text-white;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display text-heading;
+    @apply font-display text-heading dark:text-white;
   }
 }
 
@@ -28,12 +31,16 @@
 
   /* Cards */
   .card {
-    @apply bg-surface border border-surface-border rounded-card shadow-card-sm;
+    @apply bg-surface border border-surface-border rounded-card shadow-card-sm
+      dark:bg-dark-card dark:border-dark-border dark:shadow-dark-card;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .card-interactive {
-    @apply card transition-all duration-300 ease-out
-      hover:shadow-card-hover hover:border-surface-border-hover hover:-translate-y-0.5;
+    @apply card
+      hover:shadow-card-hover hover:border-surface-border-hover hover:-translate-y-1
+      dark:hover:shadow-dark-card-hover dark:hover:border-dark-border-hover;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Form inputs */
@@ -41,44 +48,56 @@
     @apply w-full bg-surface-secondary border border-surface-border rounded-button px-4 py-3
       text-body-md text-heading placeholder-muted
       transition-all duration-200
-      focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10
-      focus:bg-white;
+      focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 focus:bg-white
+      dark:bg-dark-tertiary dark:border-dark-border dark:text-white dark:placeholder-slate-500
+      dark:focus:border-primary-400 dark:focus:ring-primary-400/15 dark:focus:bg-dark-card;
   }
 
   .label-field {
-    @apply block text-body-sm font-medium text-heading mb-2;
+    @apply block text-body-sm font-medium text-heading mb-2
+      dark:text-slate-200;
   }
 
   /* Buttons */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-button bg-primary px-5 py-2.5
       text-body-sm font-semibold text-white shadow-card-sm
-      transition-all duration-200
       hover:bg-primary-hover hover:shadow-card hover:-translate-y-px
+      active:translate-y-0 active:shadow-card-sm
       focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2
-      disabled:opacity-50 disabled:pointer-events-none disabled:shadow-none;
+      disabled:opacity-50 disabled:pointer-events-none disabled:shadow-none
+      dark:shadow-dark-card dark:hover:shadow-dark-card-hover
+      dark:focus:ring-offset-dark;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-button
       border border-surface-border bg-white px-5 py-2.5
       text-body-sm font-semibold text-heading shadow-card-sm
-      transition-all duration-200
-      hover:border-surface-border-hover hover:bg-surface-secondary hover:shadow-card
+      hover:border-surface-border-hover hover:bg-surface-secondary hover:shadow-card hover:-translate-y-px
+      active:translate-y-0
       focus:outline-none focus:ring-2 focus:ring-primary/15 focus:ring-offset-2
-      disabled:opacity-50 disabled:pointer-events-none;
+      disabled:opacity-50 disabled:pointer-events-none
+      dark:bg-dark-card dark:border-dark-border dark:text-slate-200
+      dark:hover:bg-dark-card-hover dark:hover:border-dark-border-hover
+      dark:focus:ring-offset-dark;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 rounded-button px-4 py-2
       text-body-sm font-medium text-body
-      transition-all duration-200
-      hover:text-heading hover:bg-surface-tertiary;
+      hover:text-heading hover:bg-surface-tertiary
+      active:bg-surface-secondary
+      dark:text-slate-400 dark:hover:text-white dark:hover:bg-dark-tertiary;
+    transition: all 0.2s ease;
   }
 
   /* Skeleton loader */
   .skeleton {
-    @apply rounded-card-sm bg-surface-tertiary animate-pulse;
+    @apply rounded-card-sm bg-surface-tertiary animate-pulse
+      dark:bg-dark-tertiary;
   }
 
   /* Tab switches */
@@ -87,7 +106,8 @@
   }
 
   .tab-inactive {
-    @apply text-body hover:text-heading hover:bg-surface-tertiary;
+    @apply text-body hover:text-heading hover:bg-surface-tertiary
+      dark:text-slate-400 dark:hover:text-white dark:hover:bg-dark-tertiary;
   }
 
   /* Badge styles */
@@ -97,28 +117,44 @@
   }
 
   .badge-success {
-    @apply badge text-success bg-success-light border-success-border;
+    @apply badge text-success bg-success-light border-success-border
+      dark:bg-emerald-500/10 dark:border-emerald-500/25 dark:text-emerald-400;
   }
 
   .badge-warning {
-    @apply badge text-warning bg-warning-light border-warning-border;
+    @apply badge text-warning bg-warning-light border-warning-border
+      dark:bg-amber-500/10 dark:border-amber-500/25 dark:text-amber-400;
   }
 
   .badge-danger {
-    @apply badge text-danger bg-danger-light border-danger-border;
+    @apply badge text-danger bg-danger-light border-danger-border
+      dark:bg-red-500/10 dark:border-red-500/25 dark:text-red-400;
   }
 
   /* Section styling */
   .section-title {
-    @apply font-display text-display-sm lg:text-display-md text-heading text-center;
+    @apply font-display text-display-sm lg:text-display-md text-heading text-center
+      dark:text-white;
   }
 
   .section-subtitle {
-    @apply text-body-lg text-body text-center max-w-2xl mx-auto mt-4;
+    @apply text-body-lg text-body text-center max-w-2xl mx-auto mt-4
+      dark:text-slate-400;
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    @apply relative flex items-center justify-center h-9 w-9 rounded-card-sm
+      border border-surface-border bg-surface-secondary
+      hover:bg-surface-tertiary hover:border-surface-border-hover
+      dark:border-dark-border dark:bg-dark-tertiary
+      dark:hover:bg-dark-card-hover dark:hover:border-dark-border-hover
+      focus:outline-none focus:ring-2 focus:ring-primary/20;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-/* Custom scrollbar — light theme */
+/* Custom scrollbar — adapts to theme */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -135,4 +171,16 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }

@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -25,6 +26,15 @@ export default {
           tertiary: "#F1F5F9",
           border: "#E2E8F0",
           "border-hover": "#CBD5E1",
+        },
+        dark: {
+          DEFAULT: "#0B0F19",
+          card: "#111827",
+          "card-hover": "#1A2332",
+          secondary: "#0F1623",
+          tertiary: "#151D2B",
+          border: "#1E293B",
+          "border-hover": "#334155",
         },
         heading: "#0F172A",
         body: "#475569",
@@ -94,24 +104,31 @@ export default {
         button: "12px",
       },
       boxShadow: {
-        "card-sm": "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)",
+        "card-sm":
+          "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)",
         card: "0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05)",
         "card-hover":
           "0 10px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04)",
         elevated:
           "0 20px 40px -10px rgba(0,0,0,0.1), 0 8px 16px -8px rgba(0,0,0,0.06)",
-        "inner-glow": "inset 0 1px 0 0 rgba(255,255,255,0.8)",
         modal: "0 25px 50px -12px rgba(0,0,0,0.2)",
+        "dark-card":
+          "0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)",
+        "dark-card-hover":
+          "0 10px 25px -5px rgba(0,0,0,0.4), 0 8px 10px -6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)",
+        "dark-elevated":
+          "0 20px 40px -10px rgba(0,0,0,0.5), 0 8px 16px -8px rgba(0,0,0,0.4)",
       },
       animation: {
-        "fade-in": "fadeIn 0.5s ease-out",
-        "fade-in-up": "fadeInUp 0.6s ease-out",
-        "fade-in-down": "fadeInDown 0.4s ease-out",
-        "slide-up": "slideUp 0.5s ease-out",
-        "scale-in": "scaleIn 0.3s ease-out",
+        "fade-in": "fadeIn 0.5s ease-out forwards",
+        "fade-in-up": "fadeInUp 0.6s ease-out forwards",
+        "fade-in-down": "fadeInDown 0.4s ease-out forwards",
+        "slide-up": "slideUp 0.5s ease-out forwards",
+        "scale-in": "scaleIn 0.3s ease-out forwards",
         shimmer: "shimmer 2s infinite linear",
         float: "float 6s ease-in-out infinite",
         "pulse-slow": "pulse 3s ease-in-out infinite",
+        "theme-toggle": "themeToggle 0.5s ease-out",
       },
       keyframes: {
         fadeIn: {
@@ -119,7 +136,7 @@ export default {
           "100%": { opacity: "1" },
         },
         fadeInUp: {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "0%": { opacity: "0", transform: "translateY(24px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         fadeInDown: {
@@ -142,11 +159,17 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-8px)" },
         },
+        themeToggle: {
+          "0%": { transform: "scale(0.8) rotate(-30deg)", opacity: "0" },
+          "100%": { transform: "scale(1) rotate(0deg)", opacity: "1" },
+        },
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "hero-pattern":
           "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79,70,229,0.08), transparent)",
+        "hero-pattern-dark":
+          "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99,102,241,0.12), transparent)",
       },
     },
   },

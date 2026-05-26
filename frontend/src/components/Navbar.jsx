@@ -9,13 +9,14 @@ import {
   LogOut,
 } from "lucide-react";
 import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 import { useAuthModal } from "../context/AuthModalContext";
 
 const navLinkClass = (active) =>
   `text-body-sm font-medium transition-all duration-200 relative ${
     active
-      ? "text-primary"
-      : "text-body hover:text-heading"
+      ? "text-primary dark:text-primary-400"
+      : "text-body hover:text-heading dark:text-slate-400 dark:hover:text-white"
   }`;
 
 export default function Navbar() {
@@ -55,8 +56,8 @@ export default function Navbar() {
     <header
       className={`sticky top-0 z-40 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-card-sm border-b border-surface-border"
-          : "bg-white border-b border-transparent"
+          ? "bg-white/95 dark:bg-dark/95 backdrop-blur-md shadow-card-sm dark:shadow-dark-card border-b border-surface-border dark:border-dark-border"
+          : "bg-white dark:bg-dark border-b border-transparent"
       }`}
     >
       <nav className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -78,7 +79,7 @@ export default function Navbar() {
               <Link key={to} to={to} className={navLinkClass(isActive(to))}>
                 {label}
                 {isActive(to) && (
-                  <span className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-primary rounded-full" />
+                  <span className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-primary dark:bg-primary-400 rounded-full" />
                 )}
               </Link>
             ))
@@ -87,6 +88,8 @@ export default function Navbar() {
 
         {/* Desktop CTA buttons */}
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
+
           {token ? (
             <button type="button" onClick={handleLogout} className="btn-secondary !py-2">
               <LogOut className="h-4 w-4" />
@@ -104,20 +107,23 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile menu toggle */}
-        <button
-          type="button"
-          className="md:hidden btn-ghost !p-2"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile: theme toggle + menu toggle */}
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="btn-ghost !p-2"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-surface-border bg-white px-5 py-4 flex flex-col gap-1 animate-fade-in-down shadow-card">
+        <div className="md:hidden border-t border-surface-border dark:border-dark-border bg-white dark:bg-dark-card px-5 py-4 flex flex-col gap-1 animate-fade-in-down shadow-card dark:shadow-dark-card">
           {!token ? (
             <>
               <a href="#features" className="btn-ghost justify-start" onClick={() => setMobileOpen(false)}>
@@ -126,7 +132,7 @@ export default function Navbar() {
               <a href="#how-it-works" className="btn-ghost justify-start" onClick={() => setMobileOpen(false)}>
                 How it works
               </a>
-              <div className="border-t border-surface-border my-2" />
+              <div className="border-t border-surface-border dark:border-dark-border my-2" />
               <button type="button" className="btn-ghost justify-start" onClick={() => { openAuth("login"); setMobileOpen(false); }}>
                 Log in
               </button>
@@ -141,7 +147,7 @@ export default function Navbar() {
                   key={to}
                   to={to}
                   className={`btn-ghost justify-start gap-3 ${
-                    isActive(to) ? "!text-primary !bg-primary-light" : ""
+                    isActive(to) ? "!text-primary dark:!text-primary-400 !bg-primary-light dark:!bg-primary-900/20" : ""
                   }`}
                   onClick={() => setMobileOpen(false)}
                 >
@@ -149,8 +155,8 @@ export default function Navbar() {
                   {label}
                 </Link>
               ))}
-              <div className="border-t border-surface-border my-2" />
-              <button type="button" className="btn-ghost justify-start text-danger" onClick={handleLogout}>
+              <div className="border-t border-surface-border dark:border-dark-border my-2" />
+              <button type="button" className="btn-ghost justify-start text-danger dark:text-red-400" onClick={handleLogout}>
                 <LogOut className="h-4 w-4" />
                 Logout
               </button>

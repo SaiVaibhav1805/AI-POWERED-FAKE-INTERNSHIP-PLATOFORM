@@ -70,18 +70,18 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
     >
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-heading/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-heading/40 dark:bg-black/60 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden
       />
 
       {/* Modal card */}
-      <div className="relative w-full max-w-md bg-white rounded-2xl border border-surface-border shadow-modal p-8 animate-scale-in">
+      <div className="relative w-full max-w-md bg-white dark:bg-dark-card rounded-2xl border border-surface-border dark:border-dark-border shadow-modal dark:shadow-dark-card p-8 animate-scale-in">
         {/* Close button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 h-8 w-8 rounded-lg flex items-center justify-center text-muted hover:text-heading hover:bg-surface-tertiary transition-colors"
+          className="absolute right-4 top-4 h-8 w-8 rounded-lg flex items-center justify-center text-muted dark:text-slate-400 hover:text-heading dark:hover:text-white hover:bg-surface-tertiary dark:hover:bg-dark-tertiary transition-colors"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
@@ -89,16 +89,16 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
 
         {/* Logo */}
         <div className="flex items-center gap-2 mb-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-light border border-primary-200">
-            <Shield className="h-4 w-4 text-primary" strokeWidth={2} />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-light dark:bg-primary-500/10 border border-primary-200 dark:border-primary-500/25">
+            <Shield className="h-4 w-4 text-primary dark:text-primary-400" strokeWidth={2} />
           </div>
-          <span className="text-body-md font-bold text-heading font-display">
-            Internship<span className="text-primary">Guard</span>
+          <span className="text-body-md font-bold text-heading dark:text-white font-display">
+            Internship<span className="text-primary dark:text-primary-400">Guard</span>
           </span>
         </div>
 
         {/* Tab switcher */}
-        <div className="flex bg-surface-secondary rounded-card-sm p-1 mb-8 border border-surface-border">
+        <div className="flex bg-surface-secondary dark:bg-dark-secondary rounded-card-sm p-1 mb-8 border border-surface-border dark:border-dark-border">
           <button
             type="button"
             onClick={() => { setIsLogin(true); setError(""); }}
@@ -120,10 +120,10 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
         </div>
 
         {/* Heading */}
-        <h2 id="auth-modal-title" className="font-display text-heading-lg text-heading">
+        <h2 id="auth-modal-title" className="font-display text-heading-lg text-heading dark:text-white">
           {isLogin ? "Welcome back" : "Create your account"}
         </h2>
-        <p className="text-body text-body-sm mt-2 mb-6">
+        <p className="text-body dark:text-slate-400 text-body-sm mt-2 mb-6">
           {isLogin
             ? "Sign in to access your analysis dashboard and saved reports."
             : "Start protecting yourself from fraudulent internship postings."}
@@ -182,8 +182,8 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
           </div>
 
           {error && (
-            <div className="rounded-card-sm border border-danger-border bg-danger-light px-4 py-3">
-              <p className="text-danger text-body-sm">{error}</p>
+            <div className="rounded-card-sm border border-danger-border dark:border-red-500/25 bg-danger-light dark:bg-red-500/10 px-4 py-3">
+              <p className="text-danger dark:text-red-400 text-body-sm">{error}</p>
             </div>
           )}
 
@@ -198,7 +198,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
           </button>
         </form>
 
-        <p className="text-muted text-overline text-center mt-6 leading-relaxed">
+        <p className="text-muted dark:text-slate-500 text-overline text-center mt-6 leading-relaxed">
           By continuing, you agree to our Terms of Service and Privacy Policy.
         </p>
       </div>
