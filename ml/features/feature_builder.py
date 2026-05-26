@@ -1,6 +1,15 @@
 import pandas as pd
 import numpy as np
 import re
+import nltk
+
+# Ensure required NLTK resources are downloaded
+for resource in ['stopwords', 'wordnet', 'omw-1.4']:
+    try:
+        nltk.data.find(f'corpora/{resource}')
+    except LookupError:
+        nltk.download(resource, quiet=True)
+
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
