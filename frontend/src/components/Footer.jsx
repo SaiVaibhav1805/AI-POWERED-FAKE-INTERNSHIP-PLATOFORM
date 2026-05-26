@@ -63,13 +63,13 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Connect column — replaced Trust & Safety */}
+          {/* Docs column */}
           <div>
-            <h4 className="text-body-sm font-semibold text-heading dark:text-white mb-4">Connect</h4>
+            <h4 className="text-body-sm font-semibold text-heading dark:text-white mb-4">Docs</h4>
             <ul className="flex flex-col gap-3">
               <li>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/SaiVaibhav1805/AI-POWERED-FAKE-INTERNSHIP-PLATOFORM"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-body-sm text-body dark:text-slate-400 hover:text-primary dark:hover:text-primary-400 transition-colors"
@@ -79,19 +79,6 @@ export default function Footer() {
                     <path d="M9 18c-4.51 2-5-2-7-2" />
                   </svg>
                   GitHub
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-body-sm text-body dark:text-slate-400 hover:text-primary dark:hover:text-primary-400 transition-colors"
-                >
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-                  </svg>
-                  Twitter
                 </a>
               </li>
             </ul>
