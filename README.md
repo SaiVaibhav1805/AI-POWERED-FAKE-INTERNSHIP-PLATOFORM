@@ -330,7 +330,3 @@ uvicorn app:app --reload --port 8001
 
 - [SaiVaibhav1805](https://github.com/SaiVaibhav1805)
 - [subxm](https://github.com/subxm)
-
-Maintained by:
-- Sai Vaibhav
-- Subham Singh Negi
