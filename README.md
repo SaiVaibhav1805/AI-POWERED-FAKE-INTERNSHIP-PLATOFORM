@@ -331,5 +331,6 @@ uvicorn app:app --reload --port 8001
 - [SaiVaibhav1805](https://github.com/SaiVaibhav1805)
 - [subxm](https://github.com/subxm)
 
-## License
-This project is licensed under the MIT License - see LICENSE file for details.
+Maintained by:
+- Sai Vaibhav
+- Subham Singh Negi
