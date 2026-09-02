@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from config import get_settings
-from database.mongodb import connect_db, close_db
+from database.mongodb import connect_db, close_db, get_db
 from database.schema import init_indexes
 from routes import auth, analyze, upload, reports
 
@@ -14,7 +14,13 @@ async def lifespan(app: FastAPI):
     # --- Startup ---
     print("Starting up...")
     await connect_db()
-    await init_indexes()
+    if get_db() is not None:
+        try:
+            await init_indexes()
+        except Exception as e:
+            print(f"[Warning] Failed to initialize database indexes: {e}")
+    else:
+        print("[Info] Skipping index initialization because MongoDB is not connected.")
     print(f"{settings.APP_NAME} is ready.")
     yield
     # --- Shutdown ---

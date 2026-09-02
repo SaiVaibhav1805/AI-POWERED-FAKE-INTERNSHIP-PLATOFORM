@@ -15,6 +15,8 @@ async def save_report(
     current_user: dict = Depends(get_current_user)
 ):
     db  = get_db()
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable.")
     doc = {
         "user_id":        str(current_user["_id"]),
         "posting_title":  report.posting_title,
@@ -34,6 +36,8 @@ async def save_report(
 @router.get("/", response_model=List[ReportResponse])
 async def get_my_reports(current_user: dict = Depends(get_current_user)):
     db      = get_db()
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable.")
     cursor  = db["reports"].find({"user_id": str(current_user["_id"])}).sort("created_at", -1)
     reports = []
     async for doc in cursor:
@@ -47,6 +51,8 @@ async def delete_report(
     current_user: dict = Depends(get_current_user)
 ):
     db     = get_db()
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable.")
     result = await db["reports"].delete_one({
         "_id":     ObjectId(report_id),
         "user_id": str(current_user["_id"])

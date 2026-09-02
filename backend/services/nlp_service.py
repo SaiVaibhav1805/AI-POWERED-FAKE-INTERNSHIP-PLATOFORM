@@ -1,9 +1,48 @@
 import re
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../ml')))
+import nltk
 
-from features.feature_builder import clean_text, count_red_flags, RED_FLAG_KEYWORDS
+# Ensure required NLTK resources are available
+for resource in ['stopwords', 'wordnet', 'omw-1.4']:
+    try:
+        nltk.data.find(f'corpora/{resource}')
+    except LookupError:
+        nltk.download(resource, quiet=True)
+
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+
+STOP_WORDS = set(stopwords.words('english'))
+lemmatizer = WordNetLemmatizer()
+
+RED_FLAG_KEYWORDS = [
+    'earn from home', 'no experience needed', 'unlimited earnings',
+    'work from home', 'be your own boss', 'financial freedom',
+    'wire transfer', 'money order', 'western union', 'send money',
+    'guaranteed income', 'no investment', 'passive income',
+    'multi level', 'mlm', 'pyramid', 'commission only',
+    'immediate hiring', 'urgently needed', 'apply now limited',
+    'whatsapp', 'telegram', 'click here', 'limited slots'
+]
+
+def clean_text(text: str) -> str:
+    if not isinstance(text, str):
+        return ""
+    text = text.lower()
+    text = re.sub(r'http\S+|www\S+', '', text)   # remove URLs
+    text = re.sub(r'[^a-z\s]', '', text)          # remove special chars
+    text = re.sub(r'\s+', ' ', text).strip()
+    tokens = text.split()
+    tokens = [lemmatizer.lemmatize(t) for t in tokens if t not in STOP_WORDS]
+    return ' '.join(tokens)
+
+def count_red_flags(text: str) -> int:
+    if not isinstance(text, str):
+        return 0
+    text = text.lower()
+    return sum(1 for kw in RED_FLAG_KEYWORDS if kw in text)
+
 from schemas.posting import PostingInput, RedFlag
 
 def extract_text_from_posting(posting: PostingInput) -> str:
