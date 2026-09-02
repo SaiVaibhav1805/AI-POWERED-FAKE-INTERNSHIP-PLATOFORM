@@ -37,6 +37,8 @@ async def get_current_user(token: str = Depends(oauth2)):
         if not user_id:
             raise HTTPException(status_code=401, detail="Invalid token")
         db   = get_db()
+        if db is None:
+            raise HTTPException(status_code=503, detail="Database is temporarily unavailable. Check MongoDB connection.")
         user = await db["users"].find_one({"_id": ObjectId(user_id)})
         if not user:
             raise HTTPException(status_code=401, detail="User not found")
@@ -48,6 +50,8 @@ async def get_current_user(token: str = Depends(oauth2)):
 @router.post("/register", response_model=TokenResponse)
 async def register(data: UserRegister):
     db = get_db()
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable. Check MongoDB connection.")
 
     existing = await db["users"].find_one({"email": data.email})
     if existing:
@@ -66,6 +70,8 @@ async def register(data: UserRegister):
 @router.post("/login", response_model=TokenResponse)
 async def login(form: OAuth2PasswordRequestForm = Depends()):
     db   = get_db()
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database is temporarily unavailable. Check MongoDB connection.")
     user = await db["users"].find_one({"email": form.username})
 
     if not user or not verify_password(form.password, user["password"]):
